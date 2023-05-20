@@ -1,4 +1,27 @@
-// 230507 stable
+/*!
+ * cvg2step v1.0 (2023-05-20)
+ * Copy and Paste Illustrator path data (svg) and convert to a .step file (ISO 10303-21).
+ * https://dev.cog.ooo/svg2step/
+ *
+ * Copyright (c) 2023 Masaya Ishikawa
+ * http://www.cog.ooo/
+ * All rights reserved.
+ *
+ * Distributed under the MIT license. See LICENSE file for details.
+ *
+ * Date: Sat May 20 17:56:00 2023 UTC+0900 (Japan Standard Time)
+ *
+ ***
+ *
+ * Paper.js - The Swiss Army Knife of Vector Graphics Scripting.
+ *
+ * Copyright (c) 2011 - 2020, Jürg Lehni & Jonathan Puckey
+ * http://juerglehni.com/ & https://puckey.studio/
+ *
+ * Distributed under the MIT license.
+ * See http://paperjs.org/license
+ */
+
 import { generateStepFile, createStepFromSVGPathItems } from "./src/svg2stp.js";
 import { copyToClipBoard, pasteFromClipBoard } from "./src/clipboard.js";
 import { parseSVG } from "./src/svgParser.js";
@@ -40,8 +63,6 @@ document.addEventListener("keydown", async (event) => {
       console.log(cc_msg + "svgPathItems = \n" + cc_reset, svgPathItems);
       drawSVGPathItems(svgPathItems, scope_canvas_1); // draw Paths
       stepData = createStepFromSVGPathItems(svgPathItems); // create STEP file
-      //const pathData = convertSVGPathItemsToSpline(svgPathItems);
-      //console.log(cc_msg + "pathData = \n" + cc_reset, pathData);
       //drawDot(10, scope_canvas_1);
       console.log(cc_msg + "stepData = \n" + cc_reset, stepData);
     }
@@ -72,12 +93,3 @@ btn.addEventListener(
   },
   false
 );
-
-// function downloadSTEPFile() {
-//   let fileName = "download.step";
-//   let url = "data:image/svg+xml;utf8," + encodeURIComponent(stepData);
-//   var link = document.createElement("a");
-//   link.download = fileName;
-//   link.href = url;
-//   link.click();
-// }
