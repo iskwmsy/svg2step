@@ -10,6 +10,7 @@
 ## How to use
 - Copy and Paste paths from Adobe Illustrator (or other apps) to the app and click the download button.
 
+### files
 * ./index.html
 * ./script.js
 
