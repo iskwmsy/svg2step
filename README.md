@@ -10,6 +10,7 @@
 ## How to use
 
 - Copy and Paste paths from Adobe Illustrator (or other apps) to the app and click the download button.
+- How to use. https://twitter.com/kamone/status/1659889118833426436?s=20
 
 ### files
 
