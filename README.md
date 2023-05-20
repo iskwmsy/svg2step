@@ -20,3 +20,7 @@
 * ./test/ files used during development.
 * ./css/
 * ./data/ sample data for test
+
+## LICENSE
+
+This repository is published under an MIT License. See the included [LICENSE file](./LICENSE).
