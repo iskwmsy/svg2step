@@ -94,7 +94,8 @@ function convertToBezierCurvesData(bezierPathArray3D, transformation) {
       console.log(`${cc_msg}check1${cc_reset}`, node.point);
       console.log(`${cc_msg}check2${cc_reset}`, bezierPathArray3D[index - 1].point);
       if (
-        // if curve control point is same as the previous point shift it a litte bit.
+        // if curve control point is same as the previous point ignore
+        // maybe shift it a litte bit is better.
         (node.point.x == bezierPathArray3D[index - 1].point.x &&
           node.point.y == bezierPathArray3D[index - 1].point.y &&
           node.point.z == bezierPathArray3D[index - 1].point.z) ||
@@ -105,7 +106,8 @@ function convertToBezierCurvesData(bezierPathArray3D, transformation) {
         calcedP.x += 0.00001;
         calcedP.y += 0.00001;
         calcedP.z += 0.00001;
-        console.log("shifted");
+        console.log(`${cc_msg}point ignored${cc_reset}`);
+        //console.log("shifted");
         //currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
       } else {
         currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
