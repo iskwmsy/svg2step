@@ -1,6 +1,6 @@
 # svg2step
 
-## What is this ??
+## What is this ?
 
 - A handy tool to copy and paste Adobe Illustrator path data (svg) and convert to a .step file (ISO 10303-21).
 - Developed to import path to Plasticity (https://www.plasticity.xyz).
@@ -12,14 +12,15 @@
 - Copy and Paste paths from Adobe Illustrator (or other apps) to the app and click the download button.
 
 ### files
-* ./index.html
-* ./script.js
 
-* ./lib/ Paper.js is here.
-* ./src/ modules.
-* ./test/ files used during development.
-* ./css/
-* ./data/ sample data for test
+- ./index.html
+- ./script.js
+
+- ./lib/ Paper.js is here.
+- ./src/ modules.
+- ./test/ files used during development.
+- ./css/
+- ./data/ sample data for test
 
 ## LICENSE
 
