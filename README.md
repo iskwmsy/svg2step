@@ -10,11 +10,11 @@
 ## How to use
 - Copy and Paste paths from Adobe Illustrator (or other apps) to the app and click the download button.
 
-./index.html
-./script.js
+* ./index.html
+* ./script.js
 
-./lib/ Paper.js is here.
-./src/ modules.
-./test/ files used during development.
-./css/
-./data/ sample data for test
+* ./lib/ Paper.js is here.
+* ./src/ modules.
+* ./test/ files used during development.
+* ./css/
+* ./data/ sample data for test
