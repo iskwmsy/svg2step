@@ -73,7 +73,7 @@ function drawDot(diameter, scope) {
   const dot = new scope_canvas_1.Path.Rectangle({
     point: [scope.view.center.x - diameter / 2, scope.view.center.y - diameter / 2],
     size: [diameter, diameter],
-    //fillColor: "blue",
+    fillColor: "blue",
   });
   dot.style = {
     strokeColor: "black",

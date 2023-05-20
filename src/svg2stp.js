@@ -41,7 +41,6 @@ function convertSVGPathItemsToBezierPathItems(pathItem) {
   console.log(`${cc_msg}imported SVGPathItem is :${cc_reset}`, pathItem);
 
   let data = { bezierPathArray3D: [] };
-  //console.log(data);
   pathItem.pathArray3D.forEach((node, index) => {
     let command = node.command;
     let x = node.point.x;
@@ -58,12 +57,8 @@ function convertSVGPathItemsToBezierPathItems(pathItem) {
     let isM = command === "M";
     let isZ = endCommand === "Z";
 
-    // data.controlPoints.push({
     data.bezierPathArray3D.push({
       point: { x: x, y: y, z: z },
-      // x,
-      // y,
-      // z,
       onCurve: onCurve,
       M: isM,
       Z: isZ,
@@ -91,15 +86,30 @@ function convertToBezierCurvesData(bezierPathArray3D, transformation) {
     }
     if (node.onCurve) {
       if (currentCurve.length > 0) {
-        // currentCurve.push([node.point.x, node.point.y, node.point.z]);
         currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
         bezierCurves.push({ controlPoints: currentCurve });
       }
-      // currentCurve = [[node.point.x, node.point.y, node.point.z]];
       currentCurve = [[calcedP.x, calcedP.y, calcedP.z]];
     } else {
-      // currentCurve.push([node.point.x, node.point.y, node.point.z]);
-      currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
+      console.log(`${cc_msg}check1${cc_reset}`, node.point);
+      console.log(`${cc_msg}check2${cc_reset}`, bezierPathArray3D[index - 1].point);
+      if (
+        // if curve control point is same as the previous point shift it a litte bit.
+        (node.point.x == bezierPathArray3D[index - 1].point.x &&
+          node.point.y == bezierPathArray3D[index - 1].point.y &&
+          node.point.z == bezierPathArray3D[index - 1].point.z) ||
+        (node.point.x == bezierPathArray3D[index + 1].point.x &&
+          node.point.y == bezierPathArray3D[index + 1].point.y &&
+          node.point.z == bezierPathArray3D[index + 1].point.z)
+      ) {
+        calcedP.x += 0.00001;
+        calcedP.y += 0.00001;
+        calcedP.z += 0.00001;
+        console.log("shifted");
+        //currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
+      } else {
+        currentCurve.push([calcedP.x, calcedP.y, calcedP.z]);
+      }
       if (index === bezierPathArray3D.length - 1) {
         bezierCurves.push({ controlPoints: currentCurve });
       }
@@ -118,16 +128,8 @@ function convertToBezierCurvesData(bezierPathArray3D, transformation) {
         );
         bezierCurves.push({
           controlPoints: [
-            // [node.point.x, node.point.y, node.point.z],
             [calcedP.x, calcedP.y, calcedP.z],
-            [
-              calcedStartP.x,
-              -calcedStartP.y,
-              calcedStartP.z,
-              // bezierPathArray3D[startIndex].point.x,
-              // bezierPathArray3D[startIndex].point.y,
-              // bezierPathArray3D[startIndex].point.z,
-            ],
+            [calcedStartP.x, -calcedStartP.y, calcedStartP.z],
           ],
         });
       }
@@ -271,23 +273,3 @@ function convertSVGPathStringToSpline(pathString) {
   }
   return data;
 }
-
-//backup
-// 0. create path string
-// const svgPathArray = convertSVGPathItemsToString(svgPathItems);
-// console.log(`${cc_msg}svgPathArray :${cc_reset}`, svgPathArray);
-//2. convert path string to spline data
-// const splineArray = [];
-// svgPathArray.forEach((pathString) => {
-//   splineArray.push(convertSVGPathStringToSpline(pathString));
-// });
-// console.log(`${cc_msg}splineArray :${cc_reset}`, splineArray);
-// const data = [];
-// splineArray.forEach((spline) => {
-//   data.push(convertToBezierCurvesData(spline.controlPoints));
-// });
-// console.log(`${cc_msg}data :${cc_reset}`, data);
-// const mergedData = processControlPointsData(data);
-// console.log(`${cc_msg}mergedData :${cc_reset}`, mergedData);
-// const step = generateStepFile(mergedData);
-// console.log(`${cc_msg}step :${cc_reset}`, step);
