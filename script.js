@@ -24,7 +24,7 @@
 
 import { generateStepFile, createStepFromSVGPathItems } from "./src/svg2stp.js";
 import { copyToClipBoard, pasteFromClipBoard } from "./src/clipboard.js";
-import { parseSVG } from "./src/svgParser.js";
+import { parseSVG, parseSVGFiles } from "./src/svgParser.js";
 import { createSVGPathItems, drawSVGPathItems } from "./src/item-SVGPath.js";
 import { data } from "./data/data.js";
 
@@ -93,3 +93,20 @@ btn.addEventListener(
   },
   false
 );
+
+file.addEventListener("change", (event) => {
+  const files = event.target.files;
+  getSvgPathItemsFromFile(files, scope_canvas_1);
+});
+
+async function getSvgPathItemsFromFile(files, scope) {
+  const svgPathItemsFromFile = await parseSVGFiles(files, scope);
+  console.log(cc_msg + "svgPathItemsFromFile = \n" + cc_reset, svgPathItemsFromFile);
+  svgPathItemsFromFile.forEach((item) => {
+    svgPathItems = svgPathItems.concat(item);
+  });
+  console.log(cc_msg + "svgPathItems = \n" + cc_reset, svgPathItems);
+  drawSVGPathItems(svgPathItems, scope_canvas_1); // draw Paths
+  stepData = createStepFromSVGPathItems(svgPathItems); // create STEP file
+  console.log(cc_msg + "stepData = \n" + cc_reset, stepData);
+}

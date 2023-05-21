@@ -1,6 +1,7 @@
 // SVG Parser
-export { parseSVG };
+export { parseSVG, parseSVGFiles };
 import { calc_roundNumber } from "./calc.js";
+import { createSVGPathItems } from "./item-SVGPath.js";
 
 const cc_msg = "\u001b[36msvgParser.js : "; // cyan for console.log
 const cc_reset = "\u001b[0m"; // reset color
@@ -9,24 +10,57 @@ const cc_reset = "\u001b[0m"; // reset color
 // Parse SVG
 ///////////////////////////////////////////////////////////////////////////////
 
+async function parseSVGFiles(files, scope) {
+  let resultSVGPathItems = [];
+  for (const file of Array.from(files)) {
+    if (file.type.match("svg")) {
+      console.log(cc_msg + "file = \n" + cc_reset, file);
+      const svgTxtConverted = await convertFileShapesToPath(file, scope);
+      console.log(cc_msg + "svgTxtConverted  = \n" + cc_reset, svgTxtConverted);
+      const path2Ddata = createPath2DData(svgTxtConverted);
+      resultSVGPathItems = resultSVGPathItems.concat(
+        structuredClone(createSVGPathItems(path2Ddata, scope))
+      );
+    }
+  }
+  console.log(cc_msg + "resultSVGPathItems = \n" + cc_reset, resultSVGPathItems);
+  return resultSVGPathItems;
+}
+
+function convertFileShapesToPath(file, scope) {
+  return new Promise((resolve) => {
+    scope.project.importSVG(file, {
+      svg: String,
+      expandShapes: true, // expanded shape to path
+      insert: false, // don't add to the project
+      onLoad: function (item) {
+        console.log(cc_msg + "item = \n" + cc_reset, item);
+        resolve(item.exportSVG({ asString: true })); // PaperJS --> svg
+      },
+    });
+  });
+}
+
 function parseSVG(svgTxt, scope) {
   const svgTxtConverted = convertShapeToPath(svgTxt, scope); // svg --> PaperJS to convert shapes to paths.
   console.log(cc_msg + "svg shapes converted to paths = \n" + cc_reset, svgTxtConverted);
-  const data = splitPathData(svgTxtConverted);
-  console.log(cc_msg + "clip width / height = " + cc_reset + data.width + " / " + data.height);
-  console.log(cc_msg + `parsed ${data.paths.length} path objects` + cc_reset);
-  let pathStrings = [];
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  data.paths.forEach((path) => {
-    const pathData = path.getAttribute("d");
-    const normalizedPathData = normalizePathData(pathData);
-    const style = extractStyle(path);
-    console.log(cc_msg + "path data = \n" + cc_reset + pathData);
-    console.log(cc_msg + "normalized path data = \n" + cc_reset + normalizedPathData);
-    console.log(cc_msg + "path style = " + cc_reset, style);
-    pathStrings.push({ pathString: normalizedPathData, style: style });
-  });
-  return { width: data.width, height: data.height, paths: pathStrings };
+  const path2Ddata = createPath2DData(svgTxtConverted);
+  return path2Ddata;
+  // const data = splitPathData(svgTxtConverted);
+  // console.log(cc_msg + "clip width / height = " + cc_reset + data.width + " / " + data.height);
+  // console.log(cc_msg + `parsed ${data.paths.length} path objects` + cc_reset);
+  // let pathStrings = [];
+  // // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // data.paths.forEach((path) => {
+  //   const pathData = path.getAttribute("d");
+  //   const normalizedPathData = normalizePathData(pathData);
+  //   const style = extractStyle(path);
+  //   console.log(cc_msg + "path data = \n" + cc_reset + pathData);
+  //   console.log(cc_msg + "normalized path data = \n" + cc_reset + normalizedPathData);
+  //   console.log(cc_msg + "path style = " + cc_reset, style);
+  //   pathStrings.push({ pathString: normalizedPathData, style: style });
+  // });
+  // return { width: data.width, height: data.height, paths: pathStrings };
 }
 
 // Convert SVG Shapes to Paths.
@@ -41,6 +75,23 @@ function convertShapeToPath(str, scope) {
   const result = convertedSvgPath.exportSVG({ asString: true }); // PaperJS --> svg
   //convertedPath.remove(); //don't show tmp path
   return result;
+}
+
+function createPath2DData(svgTxtConverted) {
+  const data = splitPathData(svgTxtConverted);
+  console.log(cc_msg + "clip width / height = " + cc_reset + data.width + " / " + data.height);
+  console.log(cc_msg + `parsed ${data.paths.length} path objects` + cc_reset);
+  let pathStrings = [];
+  data.paths.forEach((path) => {
+    const pathData = path.getAttribute("d");
+    const normalizedPathData = normalizePathData(pathData);
+    const style = extractStyle(path);
+    console.log(cc_msg + "path data = \n" + cc_reset + pathData);
+    console.log(cc_msg + "normalized path data = \n" + cc_reset + normalizedPathData);
+    console.log(cc_msg + "path style = " + cc_reset, style);
+    pathStrings.push({ pathString: normalizedPathData, style: style });
+  });
+  return { width: data.width, height: data.height, paths: pathStrings }; //path2DData
 }
 
 function splitPathData(str) {
