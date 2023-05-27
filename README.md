@@ -28,4 +28,4 @@ https://twitter.com/kamone/status/1659889118833426436?s=20
 
 ## LICENSE
 
-This repository is published under an MIT License. See the included [LICENSE file](./LICENSE).
+This repository is published under an MIT License. See the included [LICENSE file](./LICENSE.txt).
