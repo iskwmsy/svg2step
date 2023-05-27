@@ -12,8 +12,8 @@
 
 - Copy and Paste paths from Adobe Illustrator (or other apps) to the app and click the download button.
 - Watch how it works.
-https://twitter.com/kamone/status/1660366447204507649?s=46&t=YcgSNF5WWYgGoKaLIf18NQ
-https://twitter.com/kamone/status/1659889118833426436?s=20
+  https://twitter.com/kamone/status/1660366447204507649?s=46&t=YcgSNF5WWYgGoKaLIf18NQ
+  https://twitter.com/kamone/status/1659889118833426436?s=20
 
 ### files
 
