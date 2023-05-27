@@ -15,6 +15,10 @@
   https://twitter.com/kamone/status/1660366447204507649?s=46&t=YcgSNF5WWYgGoKaLIf18NQ
   https://twitter.com/kamone/status/1659889118833426436?s=20
 
+## Issues
+
+- Sometimes complex paths with many overlapping points may not import correctly. Try to simplify your path inside your vector design app.
+
 ### files
 
 - ./index.html
